@@ -5,7 +5,7 @@
   width: 100%;
 }
 
-.NavigationItem a{
+.NavigationItem a {
   color: #8F5C2C;
   text-decoration: none;
   width: 100%;
@@ -15,7 +15,7 @@
 
 .NavigationItem a:hover,
 .NavigationItem a:active,
-.NavigationItem a:active{
+.NavigationItem a:active {
   color: #40A4C8;
 }
 
