@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
@@ -102,7 +103,7 @@ const contactData = (props) => {
         }
 
         const order = {
-            ingredients: props.ingredients,
+            ingredients: props.ings,
             price: props.price,
             orderData: formData
         };
@@ -194,4 +195,11 @@ const contactData = (props) => {
     );
 };
 
-export default contactData;
+const mapStateToProps = state => {
+    return {
+        ings: state.ingredients,
+        price: state.totalPrice
+    };
+};
+
+export default connect(mapStateToProps)(contactData);
