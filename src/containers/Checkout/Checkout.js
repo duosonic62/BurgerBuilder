@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
 
 const checkout = (props) => {
-
-    const [ingredients, setIngredients] = useState({ingredients: null});
-    const [totalPrice, setTotalPrice] = useState(0);
 
     // useEffect(() => {
     //     const query = new URLSearchParams(props.location.search);
@@ -34,25 +31,30 @@ const checkout = (props) => {
         props.history.replace('/checkout/contact-data');
     };
 
-    console.log(ingredients);
+    let summary = <Redirect to="/" />;
+    if (props.ings) {
+        const purchaseRedirect = props.purchased ? <Redirect to="/" /> : null;
+        summary = (
+            <div>
+                {purchaseRedirect}
+                <CheckoutSummary
+                    ingredients={props.ings}
+                    onCheckoutCanceled={checkoutCanceledHandller}
+                    onCheckoutContinue={checkoutContinueHandller} />
+                <Route
+                    path={props.match.path + '/contact-data'}
+                    component={ContactData} />
+            </div>
+        );
+    }
 
-    return (
-        <div>
-            <CheckoutSummary
-                ingredients={props.ings}
-                onCheckoutCanceled={checkoutCanceledHandller}
-                onCheckoutContinue={checkoutContinueHandller} />
-            <Route 
-                path={props.match.path + '/contact-data'} 
-                component={ContactData}/>
-        </div>
-    );
+    return <div>{summary}</div>;
 };
 
 const mapStateToProps = state => {
     return {
-        ings: state.ingredients,
-        price: state.totalPrice
+        ings: state.burgerBuilder.ingredients,
+        purchased: state.order.purchased
     };
 };
 
