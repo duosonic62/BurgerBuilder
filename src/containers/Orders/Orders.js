@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import Order from '../../components/Order/Order';
@@ -10,8 +10,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 const orders = (props) => {
 
     useEffect(() => {
-        console.log('show orders', props);
-        props.onFetchOrders();
+        props.onFetchOrders(props.token, props.userId);
     }, []);
 
     let orders = <Spinner />;
@@ -34,13 +33,15 @@ const orders = (props) => {
 const mapStateToProps = state => {
     return {
         orders: state.order.orders,
-        loading: state.order.loading
+        loading: state.order.loading,
+        token: state.auth.token,
+        userId: state.auth.userId
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchOrders: () => dispatch(actions.fetchOrders())
+        onFetchOrders: (token, userId) => dispatch(actions.fetchOrders(token, userId))
     };
 };
 
